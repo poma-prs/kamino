@@ -24,8 +24,8 @@ System.register(['@angular/core'], function(exports_1, context_1) {
                 SidebarComponent = __decorate([
                     core_1.Component({
                         selector: 'sd-bar',
-                        templateUrl: 'app/menu-page/sidebar-section/sidebar.component.html',
-                        styleUrls: ['app/menu-page/sidebar-section/sidebar.component.css']
+                        templateUrl: './sidebar.component.html',
+                        styleUrls: ['./sidebar.component.css']
                     }), 
                     __metadata('design:paramtypes', [])
                 ], SidebarComponent);

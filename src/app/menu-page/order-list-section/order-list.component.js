@@ -20,16 +20,39 @@ System.register(['@angular/core'], function(exports_1, context_1) {
         execute: function() {
             OrderListComponent = (function () {
                 function OrderListComponent() {
+                    this.namefoodArray = [];
+                    this.process = new core_1.EventEmitter();
                 }
+                OrderListComponent.prototype.addToOrder = function (position) {
+                    this.namefoodArray.push(position);
+                };
+                Object.defineProperty(OrderListComponent.prototype, "sum", {
+                    get: function () {
+                        var sum = 0;
+                        for (var _i = 0, _a = this.namefoodArray; _i < _a.length; _i++) {
+                            var position = _a[_i];
+                            sum += (position.food.price || 0);
+                        }
+                        return sum;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                OrderListComponent.prototype.processOrder = function () {
+                    this.process.emit(this.namefoodArray);
+                };
+                OrderListComponent.prototype.clear = function () {
+                    this.namefoodArray = [];
+                };
                 __decorate([
-                    core_1.Input(), 
+                    core_1.Output(), 
                     __metadata('design:type', Object)
-                ], OrderListComponent.prototype, "namefoodArray", void 0);
+                ], OrderListComponent.prototype, "process", void 0);
                 OrderListComponent = __decorate([
                     core_1.Component({
                         selector: 'fd-od-list',
-                        templateUrl: 'app/menu-page/order-list-section/order-list.component.html',
-                        styleUrls: ['app/menu-page/order-list-section/order-list.component.css', 'app/menu-page/order-list-section/order-list-button.component.css']
+                        templateUrl: './order-list.component.html',
+                        styleUrls: ['./order-list.component.css', './order-list-button.component.css']
                     }), 
                     __metadata('design:paramtypes', [])
                 ], OrderListComponent);

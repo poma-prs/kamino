@@ -24,8 +24,8 @@ System.register(['@angular/core'], function(exports_1, context_1) {
                 PromotionPageComponent = __decorate([
                     core_1.Component({
                         selector: 'promo-app',
-                        templateUrl: 'app/promotion-page/promotion-page.component.html',
-                        styleUrls: ['app/promotion-page/promotion-page.component.css']
+                        templateUrl: './promotion-page.component.html',
+                        styleUrls: ['./promotion-page.component.css']
                     }), 
                     __metadata('design:paramtypes', [])
                 ], PromotionPageComponent);

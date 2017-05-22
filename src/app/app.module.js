@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/platform-browser', '@angular/forms', './app.routing', './app.component', './login-page/login.component', './about-page/about-page.component', './front-page/front.component', './kitchen-page/kitchen-page.component', './payment-page/pay.component', './promotion-page/promotion-page.component', './receipt-page/receipt.component', './menu-page/menu-page.component', './menu-page/sidebar-section/sidebar.component', './menu-page/order-list-section/order-list.component', './menu-page/food-list-section/food-list.component', "./api/session.service", "./api/api.service", "./api/auth.service", "./auth.guard"], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/platform-browser', '@angular/forms', './app.routing', './app.component', './login-page/login.component', './about-page/about-page.component', './front-page/front.component', './kitchen-page/kitchen-page.component', './payment-page/pay.component', './promotion-page/promotion-page.component', './receipt-page/receipt.component', './menu-page/menu-page.component', './menu-page/sidebar-section/sidebar.component', './menu-page/order-list-section/order-list.component', './menu-page/food-list-section/food-list.component', "./api/session.service", "./api/api.service", "./api/auth.service", "./auth.guard", "@angular/http"], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,10 +10,10 @@ System.register(['@angular/core', '@angular/platform-browser', '@angular/forms',
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, platform_browser_1, forms_1, app_routing_1, app_component_1, login_component_1, about_page_component_1, front_component_1, kitchen_page_component_1, pay_component_1, promotion_page_component_1, receipt_component_1, menu_page_component_1, sidebar_component_1, order_list_component_1, food_list_component_1, session_service_1, api_service_1, auth_service_1, auth_guard_1;
+    var core_1, platform_browser_1, forms_1, app_routing_1, app_component_1, login_component_1, about_page_component_1, front_component_1, kitchen_page_component_1, pay_component_1, promotion_page_component_1, receipt_component_1, menu_page_component_1, sidebar_component_1, order_list_component_1, food_list_component_1, session_service_1, api_service_1, auth_service_1, auth_guard_1, http_1;
     var AppModule;
     function sessionServiceFactory(win) {
-        return new session_service_1.SessionService('merchant', win);
+        return new session_service_1.SessionService('api', win);
     }
     exports_1("sessionServiceFactory", sessionServiceFactory);
     return {
@@ -77,6 +77,9 @@ System.register(['@angular/core', '@angular/platform-browser', '@angular/forms',
             },
             function (auth_guard_1_1) {
                 auth_guard_1 = auth_guard_1_1;
+            },
+            function (http_1_1) {
+                http_1 = http_1_1;
             }],
         execute: function() {
             AppModule = (function () {
@@ -87,7 +90,9 @@ System.register(['@angular/core', '@angular/platform-browser', '@angular/forms',
                         imports: [
                             platform_browser_1.BrowserModule,
                             forms_1.FormsModule,
-                            app_routing_1.Routing
+                            app_routing_1.Routing,
+                            http_1.HttpModule,
+                            forms_1.ReactiveFormsModule,
                         ],
                         declarations: [
                             app_component_1.AppComponent,
@@ -102,11 +107,11 @@ System.register(['@angular/core', '@angular/platform-browser', '@angular/forms',
                             login_component_1.LoginPageComponent,
                             front_component_1.FrontPageComponent,
                             receipt_component_1.ReceiptPageComponent,
-                            auth_guard_1.AuthGuard,
                         ],
                         providers: [
                             api_service_1.ApiService,
                             auth_service_1.AuthService,
+                            auth_guard_1.AuthGuard,
                             {
                                 provide: session_service_1.SessionService,
                                 deps: [session_service_1.WINDOW],

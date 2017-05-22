@@ -22,19 +22,23 @@ System.register(['@angular/core'], function(exports_1, context_1) {
                 function FoodListComponent() {
                     this.search = new core_1.EventEmitter();
                     this.totalOrder = 1;
+                    this.opened = false;
                 }
-                FoodListComponent.prototype.addInList = function (foodname, foodprice, total) {
-                    this.totalOrder++;
-                    this.addedItem = {
-                        name: foodname,
-                        price: foodprice,
-                        totalOrder: total
-                    };
-                    this.search.emit(this.addedItem);
+                FoodListComponent.prototype.select = function (item) {
+                    this.selectedItem = item;
+                    this.opened = true;
+                };
+                FoodListComponent.prototype.addInList = function (count) {
+                    this.opened = false;
+                    this.search.emit({
+                        food: this.selectedItem,
+                        count: count
+                    });
+                    this.selectedItem = null;
                 };
                 __decorate([
                     core_1.Input(), 
-                    __metadata('design:type', Object)
+                    __metadata('design:type', Array)
                 ], FoodListComponent.prototype, "itemList", void 0);
                 __decorate([
                     core_1.Output(), 
@@ -43,8 +47,8 @@ System.register(['@angular/core'], function(exports_1, context_1) {
                 FoodListComponent = __decorate([
                     core_1.Component({
                         selector: 'mw-food-item',
-                        templateUrl: 'app/menu-page/food-list-section/food-list.component.html',
-                        styleUrls: ['app/menu-page/food-list-section/food-list.component.css']
+                        templateUrl: './food-list.component.html',
+                        styleUrls: ['./food-list.component.css']
                     }), 
                     __metadata('design:paramtypes', [])
                 ], FoodListComponent);

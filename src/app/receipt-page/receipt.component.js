@@ -24,8 +24,8 @@ System.register(['@angular/core'], function(exports_1, context_1) {
                 ReceiptPageComponent = __decorate([
                     core_1.Component({
                         selector: 'receipt-page',
-                        templateUrl: 'app/receipt-page/receipt.component.html',
-                        styleUrls: ['app/receipt-page/receipt.component.css'],
+                        templateUrl: './receipt.component.html',
+                        styleUrls: ['./receipt.component.css'],
                     }), 
                     __metadata('design:paramtypes', [])
                 ], ReceiptPageComponent);

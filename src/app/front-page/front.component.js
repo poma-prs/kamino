@@ -24,8 +24,8 @@ System.register(['@angular/core'], function(exports_1, context_1) {
                 FrontPageComponent = __decorate([
                     core_1.Component({
                         selector: 'front-page',
-                        templateUrl: 'app/front-page/front.component.html',
-                        styleUrls: ['app/front-page/front.component.css'],
+                        templateUrl: './front.component.html',
+                        styleUrls: ['./front.component.css'],
                     }), 
                     __metadata('design:paramtypes', [])
                 ], FrontPageComponent);

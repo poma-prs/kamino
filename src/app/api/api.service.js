@@ -1,4 +1,4 @@
-System.register(["@angular/core", "@angular/http", "rxjs"], function(exports_1, context_1) {
+System.register(["@angular/core", "@angular/http", "rxjs", "./session.service", "@angular/router"], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,8 +10,11 @@ System.register(["@angular/core", "@angular/http", "rxjs"], function(exports_1, 
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, http_1, rxjs_1;
-    var ApiService;
+    var __param = (this && this.__param) || function (paramIndex, decorator) {
+        return function (target, key) { decorator(target, key, paramIndex); }
+    };
+    var core_1, http_1, rxjs_1, session_service_1, router_1;
+    var API_BASE_URL, ApiService;
     return {
         setters:[
             function (core_1_1) {
@@ -22,34 +25,53 @@ System.register(["@angular/core", "@angular/http", "rxjs"], function(exports_1, 
             },
             function (rxjs_1_1) {
                 rxjs_1 = rxjs_1_1;
+            },
+            function (session_service_1_1) {
+                session_service_1 = session_service_1_1;
+            },
+            function (router_1_1) {
+                router_1 = router_1_1;
             }],
         execute: function() {
+            exports_1("API_BASE_URL", API_BASE_URL = new core_1.OpaqueToken('api-base-url'));
             ApiService = (function () {
-                function ApiService(http) {
+                function ApiService(baseUrl, http, sessionService, router) {
+                    this.baseUrl = baseUrl;
                     this.http = http;
+                    this.sessionService = sessionService;
+                    this.router = router;
                 }
                 ApiService.prototype.login = function (user) {
-                    return this.request(http_1.RequestMethod.Post, ['api', 'login']);
+                    return this.request(http_1.RequestMethod.Post, ['login'], null, user, true);
                 };
-                ApiService.prototype.jwt = function () {
-                    // create authorization header with jwt token
-                    var currentUser = JSON.parse(localStorage.getItem('currentUser'));
-                    if (currentUser && currentUser.token) {
-                        var headers = new Headers({ 'Authorization': 'Bearer ' + currentUser.token });
-                        return new http_1.RequestOptions({ headers: headers });
-                    }
+                ApiService.prototype.order = function (order) {
+                    var total = 0;
+                    var mappedOrder = order.map(function (orderPos) {
+                        total += (orderPos.count * orderPos.food.price);
+                        return {
+                            'foodId': orderPos.food.id,
+                            'foodCount': orderPos.count
+                        };
+                    });
+                    var processOrder = {
+                        order: mappedOrder,
+                        sum: total
+                    };
+                    return this.request(http_1.RequestMethod.Post, ['order'], null, processOrder, true);
                 };
-                ApiService.prototype.request = function (method, url, params, data) {
+                ApiService.prototype.request = function (method, url, params, data, noAuth) {
                     if (url === void 0) { url = []; }
                     if (params === void 0) { params = null; }
                     if (data === void 0) { data = null; }
-                    return this.sendRequest(method, url.join('/'), params, data);
+                    if (noAuth === void 0) { noAuth = false; }
+                    return this.sendRequest(method, url.join('/'), params, data, noAuth);
                 };
-                ApiService.prototype.sendRequest = function (method, url, params, data) {
+                ApiService.prototype.sendRequest = function (method, url, params, data, noAuth) {
                     if (params === void 0) { params = null; }
                     if (data === void 0) { data = null; }
+                    if (noAuth === void 0) { noAuth = false; }
                     var request = null;
-                    if (this.sessionVault.getToken()) {
+                    if (this.sessionService.token || noAuth) {
                         request = this.prepareRequest(method, url, params, data)
                             .catch(function (response) {
                             console.info(response);
@@ -62,7 +84,7 @@ System.register(["@angular/core", "@angular/http", "rxjs"], function(exports_1, 
                         });
                     }
                     else {
-                        this.sessionService.startLogin();
+                        this.router.navigateByUrl('/login');
                     }
                     return request;
                 };
@@ -72,19 +94,19 @@ System.register(["@angular/core", "@angular/http", "rxjs"], function(exports_1, 
                     var request = {
                         url: this.baseUrl + url,
                         method: method,
-                        headers: new Headers({
+                        headers: new http_1.Headers({
                             'Accept': 'application/json',
                             'Content-Type': 'application/json',
-                            'X-Api-Token': this.sessionService.getToken(),
+                            'X-Api-Token': this.sessionService.token,
                         }),
-                        params: this.prepareParams(params),
+                        search: this.prepareParams(params),
                         body: this.prepareData(data)
                     };
-                    return this.http.request(new Request(request));
+                    return this.http.request(new http_1.Request(request));
                 };
                 ApiService.prototype.prepareParams = function (params) {
                     if (params === void 0) { params = null; }
-                    var result = new URLSearchParams();
+                    var result = new http_1.URLSearchParams();
                     if (params) {
                         for (var key in params) {
                             if (params.hasOwnProperty(key)) {
@@ -113,8 +135,9 @@ System.register(["@angular/core", "@angular/http", "rxjs"], function(exports_1, 
                     return result;
                 };
                 ApiService = __decorate([
-                    core_1.Injectable(), 
-                    __metadata('design:paramtypes', [http_1.Http])
+                    core_1.Injectable(),
+                    __param(0, core_1.Inject(API_BASE_URL)), 
+                    __metadata('design:paramtypes', [Object, http_1.Http, session_service_1.SessionService, router_1.Router])
                 ], ApiService);
                 return ApiService;
             }());

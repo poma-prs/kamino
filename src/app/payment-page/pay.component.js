@@ -24,8 +24,8 @@ System.register(['@angular/core'], function(exports_1, context_1) {
                 PaymentComponent = __decorate([
                     core_1.Component({
                         selector: 'pay-page',
-                        templateUrl: 'app/payment-page/pay.component.html',
-                        styleUrls: ['app/payment-page/pay.component.css'],
+                        templateUrl: './pay.component.html',
+                        styleUrls: ['./pay.component.css'],
                     }), 
                     __metadata('design:paramtypes', [])
                 ], PaymentComponent);

@@ -25,8 +25,8 @@ System.register(['@angular/core'], function(exports_1, context_1) {
                 KitchenPageComponent = __decorate([
                     core_1.Component({
                         selector: 'kitchen-app',
-                        templateUrl: 'app/kitchen-page/kitchen-page.component.html',
-                        styleUrls: ['app/kitchen-page/kitchen-page.component.css']
+                        templateUrl: './kitchen-page.component.html',
+                        styleUrls: ['./kitchen-page.component.css']
                     }), 
                     __metadata('design:paramtypes', [])
                 ], KitchenPageComponent);

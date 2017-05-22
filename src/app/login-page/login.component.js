@@ -1,4 +1,4 @@
-System.register(['@angular/core', "../api/auth.service"], function(exports_1, context_1) {
+System.register(['@angular/core', "../api/auth.service", "../api/api.service", "../api/session.service"], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', "../api/auth.service"], function(exports_1, co
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, auth_service_1;
+    var core_1, auth_service_1, api_service_1, session_service_1;
     var LoginPageComponent;
     return {
         setters:[
@@ -19,26 +19,50 @@ System.register(['@angular/core', "../api/auth.service"], function(exports_1, co
             },
             function (auth_service_1_1) {
                 auth_service_1 = auth_service_1_1;
+            },
+            function (api_service_1_1) {
+                api_service_1 = api_service_1_1;
+            },
+            function (session_service_1_1) {
+                session_service_1 = session_service_1_1;
             }],
         execute: function() {
             LoginPageComponent = (function () {
-                function LoginPageComponent(authService) {
+                function LoginPageComponent(authService, apiService, sessionService) {
                     this.authService = authService;
+                    this.apiService = apiService;
+                    this.sessionService = sessionService;
+                    this.user = {
+                        login: '',
+                        password: ''
+                    };
                     this.loading = false;
                     this.result = false;
                     this.touched = false;
                 }
                 LoginPageComponent.prototype.login = function () {
-                    this.touched = true;
-                    this.result = this.authService.login(this.user);
+                    var _this = this;
+                    // this.touched = true;
+                    // this.result = this.authService.login(this.user);
+                    this.apiService.login(this.user)
+                        .subscribe(function (data) {
+                        if (!data.error && data.token) {
+                            _this.sessionService.token = data.token;
+                        }
+                        if (data.error) {
+                            console.error(data.error);
+                        }
+                    }, function (error) {
+                        console.error(error);
+                    });
                 };
                 LoginPageComponent = __decorate([
                     core_1.Component({
                         selector: 'login-page',
-                        templateUrl: 'app/login-page/login.component.html',
-                        styleUrls: ['app/login-page/login.component.css'],
+                        templateUrl: './login.component.html',
+                        styleUrls: ['./login.component.css'],
                     }), 
-                    __metadata('design:paramtypes', [auth_service_1.AuthService])
+                    __metadata('design:paramtypes', [auth_service_1.AuthService, api_service_1.ApiService, session_service_1.SessionService])
                 ], LoginPageComponent);
                 return LoginPageComponent;
             }());

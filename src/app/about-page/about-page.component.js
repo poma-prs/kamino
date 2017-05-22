@@ -24,8 +24,8 @@ System.register(['@angular/core'], function(exports_1, context_1) {
                 AboutPageComponent = __decorate([
                     core_1.Component({
                         selector: 'about-page',
-                        templateUrl: 'app/about-page/about-page.component.html',
-                        styleUrls: ['app/about-page/about-page.component.css']
+                        templateUrl: './about-page.component.html',
+                        styleUrls: ['./about-page.component.css']
                     }), 
                     __metadata('design:paramtypes', [])
                 ], AboutPageComponent);
