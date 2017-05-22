@@ -18,11 +18,9 @@
           <tr *ngFor="let info of inventory">
             <td class="col-sm-8 col-md-6">
               <div class="media">
-                <a class="thumbnail pull-left" href="#">
-                  <img class="media-object"
-                       src="{{ info.food.picture }}"
-                       style="width: 72px; height: 72px;">
-                </a>
+                <div class="thumbnail pull-left">
+                  <img class="media-object" src="{{ info.food.picture }}">
+                </div>
                 <div class="media-body">
                     <h4 class="media-heading">
                       {{ info.food.name }}
@@ -80,11 +78,9 @@
             <tr *ngFor="let info of order.positions;let pindex = index">
               <td class="col-sm-8 col-md-6">
                 <div class="media">
-                  <a class="thumbnail pull-left" href="#">
-                    <img class="media-object"
-                         src="{{ info.product.picture }}"
-                         style="width: 72px; height: 72px;">
-                  </a>
+                  <div class="thumbnail pull-left">
+                    <img class="media-object" src="{{ info.product.picture }}">
+                  </div>
                   <div class="media-body">
                       <h4 class="media-heading">
                         {{ info.product.name }}

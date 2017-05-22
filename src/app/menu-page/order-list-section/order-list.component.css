@@ -7,18 +7,34 @@
   opacity: 0.8;
   font-size: 10px;
 }
-.ds-btn li{ 
+.ds-btn li{
   list-style:none;
   /*float:left; */
-  padding:2px; 
+  padding:2px;
   }
 .ds-btn li span{
   padding-left:10px;
   padding-right:5px;width:100%;
-  display:inline-block; 
+  display:inline-block;
   text-align:left;}
 .ds-btn li span {
-  width:100%; 
-  display:inline-block; 
+  width:100%;
+  display:inline-block;
   text-align:left;
   }
+
+table .thumbnail.pull-left {
+  padding: 3px;
+  margin-right: 10px;
+  height: 75px;
+  width: 75px;
+}
+
+table .thumbnail.pull-left img {
+  height: 100%;
+  width: 100%;
+}
+
+table .media .media-body h4 {
+  margin-top: 30px
+}
