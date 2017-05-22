@@ -1,1 +1,1 @@
-web: node food-website/server.js
+web: node server.js
