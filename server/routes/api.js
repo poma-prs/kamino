@@ -2,8 +2,14 @@ const express = require('express');
 const router = express.Router();
 const pgp = require("pg-promise")(/*options*/);
 let db;
+// db = pgp("postgres://mgbuuvsxkaoqbr:d476af0ca55759c4d52084381ef70550ac26df21b018aac6aaf0471143d1a206@ec2-54-225-107-107.compute-1.amazonaws.com:5432/dekh1qc1lihla0?ssl=false");
 if (process && process.env && process.env.DATABASE_URL) {
     db = pgp(process.env.DATABASE_URL);
+} else if (process && process.env && process.env.NODE_ENV) {
+    db = pgp(process.env.NODE_ENV);
+}
+else if (process && process.env && process.env.HEROKU_POSTGRESQL_DBNAME_URL) {
+    db = pgp(process.env.HEROKU_POSTGRESQL_DBNAME_URL);
 } else {
     db = pgp("postgres://postgres:1234321@localhost:5432/postgres");
 }
