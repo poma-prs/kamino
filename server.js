@@ -1,8 +1,8 @@
 // Get dependencies
-const express = require('express');
 const path = require('path');
 const http = require('http');
 const bodyParser = require('body-parser');
+const express = require('express');
 
 // Get our API routes
 const api = require('./server/routes/api');
