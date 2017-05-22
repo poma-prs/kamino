@@ -16,6 +16,7 @@ export class KitchenPageComponent implements OnInit, OnDestroy {
     inventory: TrashPosition[] = [];
     cooking: boolean = false;
     subs: Subscription;
+    logHistory: Array<string> = [];
 
     constructor(protected apiService: ApiService) {
 
@@ -56,6 +57,7 @@ export class KitchenPageComponent implements OnInit, OnDestroy {
         this.requestOrders();
         this.subs = Observable.timer(300).subscribe(() => {
             this.inventory = [];
+            this.logHistory.push('Inventory cleared');
         });
 
     }
@@ -67,29 +69,48 @@ export class KitchenPageComponent implements OnInit, OnDestroy {
     make(number: number, orderIndex: number, posIndex: number) {
         if (!this.cooking) {
             this.cooking = true;
+            const cookingFood = this.orders[orderIndex].positions[posIndex].product;
+            this.logHistory.push('Start cooking ' + number + ' ' + cookingFood.name);
+
             setTimeout(() => {
                 this.cooking = false;
-            }, 2000);
+                this.logHistory.push('Finish cooking ' + number + ' ' + cookingFood.name);
+            }, 5000);
             if (this.orders[orderIndex]) {
                 let count = this.orders[orderIndex].positions[posIndex].count;
-                if (number >= count) {
+                let left = this.orders[orderIndex].positions[posIndex].count - this.orders[orderIndex].positions[posIndex].cooked;
+                if (number >= left) {
                     this.orders[orderIndex].positions[posIndex].cooked = count;
-                    this.inventory.push({
-                        food: this.orders[orderIndex].positions[posIndex].product,
-                        count: number - count
-                    });
+                    let inced: boolean = false;
+                    for (let invent of this.inventory) {
+                        if (invent.food.id === this.orders[orderIndex].positions[posIndex].product.id) {
+                            inced = true;
+                            invent.count += (number - left);
+                        }
+                    }
+                    if (!inced && number !== count) {
+                        this.inventory.push({
+                            food: this.orders[orderIndex].positions[posIndex].product,
+                            count: number - left
+                        });
+                    }
+                    if (number - left > 0) {
+                        this.logHistory.push((number - count) + ' ' + cookingFood.name + ' goes to inventory');
+                    }
                 } else {
                     this.orders[orderIndex].positions[posIndex].cooked += number;
-                    let left = this.orders[orderIndex].positions[posIndex].count -
-                        this.orders[orderIndex].positions[posIndex].cooked;
                     for (const inventoryFood of this.inventory) {
                         if (inventoryFood.food.id === this.orders[orderIndex].positions[posIndex].product.id) {
                             if (inventoryFood.count >= left) {
                                 this.orders[orderIndex].positions[posIndex].cooked = count;
                                 inventoryFood.count -= left;
+                                this.logHistory.push(left + ' ' + cookingFood.name + ' goes from inventory to order');
                             } else {
                                 this.orders[orderIndex].positions[posIndex].cooked += inventoryFood.count;
                                 inventoryFood.count = 0;
+                                this.logHistory.push(
+                                    'All(' + inventoryFood.count + ') ' + cookingFood.name + ' goes from inventory to order'
+                                );
                             }
                         }
                     }
@@ -112,7 +133,8 @@ export class KitchenPageComponent implements OnInit, OnDestroy {
                 .subscribe((res) => {
                     console.log('Order is fulfiled');
                     this.loading = false;
-                    this.requestOrders();
+                    this.logHistory.push('Order#' + this.orders[orderIndex].id + ' is fulfiled');
+                    this.orders.splice(orderIndex, 1);
                 }, (error) => console.log(error));
         }
     }

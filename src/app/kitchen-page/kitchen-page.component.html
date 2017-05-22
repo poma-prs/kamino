@@ -2,6 +2,8 @@
     <!--<pm-products></pm-products>-->
     <br>
     <h1>kitchen</h1>
+    <span *ngIf="loading">Loading...</span>
+    <span *ngIf="cooking">Cooking...</span>
     <h1 *ngIf="inventory.length > 0">Inventory:</h1>
     <table class="table-condensed" *ngIf="inventory.length > 0">
         <tr>
@@ -43,5 +45,8 @@
             Fulfil order
         </button>
     </div>
-
+    <div class="log-history">
+        <p>Log history: </p>
+        <div *ngFor="let history of logHistory"><span>{{history}} </span><br></div>
+    </div>
 </div>

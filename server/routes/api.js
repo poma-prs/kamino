@@ -246,8 +246,9 @@ router.post('/login', (req, res) => {
                 } else {
                     res.send({successful: 0, error: {code: 1, message: "invalid login or password"}});
                 }
+            } else {
+                res.send({successful: 0, error: {code: 1, message: "invalid login or password"}});
             }
-
         })
         .catch((error) => {
             console.log("ERROR:", error);
@@ -351,8 +352,9 @@ router.get('/order', (req, res) => {
             // }
             // result = orders;
         }).catch((error) => {
-        console.log(error);
-        res.send({successful: 0, error: error})
+        res.send([]);
+        // console.log(error);
+        // res.send({successful: 0, error: error})
     })
 
 

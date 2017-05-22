@@ -14,6 +14,8 @@ export class MenuPageComponent {
     @ViewChild(OrderListComponent)
     orderList: OrderListComponent;
     foodItems = foodItems;
+    loading: boolean = false;
+
     addToOrder(event) {
         if (this.orderList) {
             this.orderList.addToOrder(event);
@@ -27,18 +29,23 @@ export class MenuPageComponent {
 
     processTheOrder(orderList: OrderPosition[]) {
         console.log(orderList);
-        this.apiService.order(orderList).subscribe(
-            (response) => {
-                if (response) {
-                    if (this.orderList) {
-                        this.orderList.clear();
+        if (!this.loading) {
+            this.loading = true;
+            this.apiService.order(orderList).finally(() => {
+                this.loading = false
+            }).subscribe(
+                (response) => {
+                    if (response) {
+                        if (this.orderList) {
+                            this.orderList.clear();
+                        }
                     }
+                },
+                (error) => {
+                    console.log(error);
                 }
-            },
-            (error) => {
-                console.log(error);
-            }
-        )
+            )
+        }
     }
 
 }
