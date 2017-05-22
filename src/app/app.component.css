@@ -1,0 +1,37 @@
+.menuBarItems{
+    display: inline-block;
+}
+img {
+    width: 200px;
+    height: 200px;
+}
+h3{
+    font-size: 2em;
+    flex: 1;
+    font-family: "Inknut Antiqua";
+    color: #bdc2c5;
+}
+
+.navbar {
+    background-color: #e4e6e5;
+    background-color: rgba( 228, 230, 229, .85 );
+    border-bottom: 0 none;
+    font-size: 12px;
+    transition: .25s all linear;
+}
+
+.navbar.inv {
+    background-color: rgba( 0, 0, 0, .5 );
+    border-bottom: 1px solid #bfbfbf;
+}
+
+.navbar .nav a {
+    color: #5f5f5f;
+    font-family: "Titillium Web", sans-serif;
+    font-weight: 600;
+    transition: all .5 linear;
+}
+
+.navbar.inv a {
+    color: #e4e6e5;
+}

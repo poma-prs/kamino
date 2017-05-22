@@ -1,0 +1,17 @@
+<div *ngIf="namefoodArray.length" class="container">
+    <div class="row">
+        <ul class="ds-btn" *ngFor="let allInfo of namefoodArray">
+            <li>
+                <p>
+                    <button class="w3-button w3-black w3-round-xxlarge"><span>{{allInfo.count}} {{allInfo.food.name}} {{allInfo.food.price * allInfo.count}}</span>
+                    </button>
+                </p>
+            </li>
+        </ul>
+    </div>
+    <div>Total: {{sum}}</div>
+</div>
+
+<button *ngIf="namefoodArray.length" (click)="processOrder()">
+    Make an order
+</button>

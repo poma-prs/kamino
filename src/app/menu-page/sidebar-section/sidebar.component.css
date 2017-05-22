@@ -1,0 +1,54 @@
+body{
+  font-family: 'Raleway', sans-serif;
+}
+.sidebar2 {
+    background-color: #1a1f27;
+    padding: 0px !important;
+    box-shadow: 2px 2px 5px #262a35;
+    z-index: 1000;
+    width: 18%;
+    height: 40%;
+    position: fixed;
+    opacity:0.7;
+    border-top-right-radius: 20px;
+
+}
+.btn.Add-friend:hover,.btn.Add-friend:active,.btn.Add-friend:active:focus,.btn.Add-friend:active:hover,.btn.Add-friend:visited,.btn.Add-friend:focus
+{
+  background-color:#F17153;
+  border: 0.5px solid transparent;
+  color:white;
+  outline:none;
+  font-weight:600;
+}
+.coins
+{
+  display:inline-block;
+  font-size:20px;
+font-family:'"Helvetica Neue",Helvetica,Arial,sans-serif';
+}
+.list {
+    color: #eee;
+    list-style: none;
+    padding-left: 0px;
+}
+li:nth-child(odd) {
+    background-color:#13171d;
+}
+li>i {margin-right:15px;
+}
+.list> li {
+    padding: 15px 0px 15px 40px;
+    font-size: 16px;
+    font-weight:lighter;
+}
+.list>li:hover {
+
+    color: white;
+
+    transition: padding-left 0.2s linear;
+    padding-left: 60px;
+
+}
+
+

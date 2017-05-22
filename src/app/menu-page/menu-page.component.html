@@ -1,0 +1,49 @@
+<head lang="en">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <title>Product Page</title>
+    <meta name="description" content="BlackTie.co - Free Handsome Bootstrap Themes"/>
+    <meta name="keywords" content="themes, bootstrap, free, templates, bootstrap 3, freebie,">
+    <meta property="og:title" content="">
+    <link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,600,300,200&subset=latin,latin-ext'
+          rel='stylesheet' type='text/css'>
+
+</head>
+
+<div class="body">
+    <!-- === MAIN Background === -->
+    <div class="slide story" id="slide-1" data-slide="1">
+        <div class="container">
+            <div id="home-row-1" class="row clearfix">
+                <div class="col-12">
+                    <h1 class="font-semibold">Kamino - <span class="font-thin">Planet X</span></h1>
+                    <h4 class="font-thin">Let's <span class="font-semibold">"Order Food" </span>Now</h4>
+                    <br>
+                    <br>
+                </div>
+            </div>
+
+        </div>
+
+        <sd-bar></sd-bar>
+        <div id="con">
+            <fd-od-list
+                    (process)="processTheOrder($event)">
+
+            </fd-od-list>
+            <div class="middle">
+                <header>
+                    <h1 class="description">Click the Order Now Button</h1>
+                </header>
+                <mw-food-item
+                        *ngFor="let allFoods of foodItems"
+                        [itemList]="allFoods"
+                        (search)="addToOrder($event)"></mw-food-item>
+            </div>
+            <div id="footer">
+                <h3 id="f-h3">FOOTER</h3>
+            </div>
+            <div>
+            </div>
+

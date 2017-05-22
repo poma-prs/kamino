@@ -1,0 +1,22 @@
+<div class = "navbar" data-activeslide="1">
+  <div id = "logo">
+    <img src = "assets/media/Starwars.png" alt = "" />
+    <h3>Kamino Kanteen</h3>
+  </div>
+  <div id = "navBar">
+    <nav>
+      <a id='home-link' routerLink='' routerLinkActive='active'>Home</a>
+      <a id='promotion-link' routerLink='/promotion' routerLinkActive='active'>Promotion</a>
+      <a id='menu-link' routerLink='/menu' routerLinkActive='active'>Menu</a>
+      <a id='about-link' routerLink='/about' routerLinkActive='active'>About Us</a>
+      <a id='kitchen-link' routerLink='/kitchen' routerLinkActive='active'>Kitchen</a>
+      <a id='receipt-link' routerLink='/receipt' routerLinkActive='active'>Receipt</a>
+      <a id='payment-link' routerLink='/payment' routerLinkActive='active'>Payment</a>
+      <a id='login-link' routerLink='/login' routerLinkActive='active'>Login</a>
+    </nav>
+  </div>
+</div>
+
+<div>
+  <router-outlet></router-outlet>
+</div>
