@@ -6,6 +6,7 @@ import {Observable} from "rxjs";
 import {SessionService} from "./session.service";
 import {Router} from "@angular/router";
 import {OrderPosition} from "../menu-page/food-list-section/food-list.component";
+import {Order} from "./models/Order";
 
 export const API_BASE_URL = new OpaqueToken('api-base-url');
 
@@ -31,19 +32,34 @@ export class ApiService {
                 'foodCount': orderPos.count
             }
         });
-       let processOrder = {
-            order : mappedOrder,
-            sum : total
+        let processOrder = {
+            order: mappedOrder,
+            sum: total
         };
         return this.request<LoginResponse>(RequestMethod.Post, ['order'], null, processOrder, true);
     }
 
-    protected request<RequestResult>(method: RequestMethod, url: string[] = [], params: any = null, data: any = null, noAuth: boolean = false) {
+    public getOrders() {
+        return this.request<Order[]>(RequestMethod.Get, ['order']);
+    }
+
+    public fulfil(orderId: number) {
+        return this.request<{ successful: boolean , error?: any}>(
+            RequestMethod.Post, ['order', 'fulfil'], null, {orderId: orderId}, true
+        );
+    }
+
+
+    protected request<RequestResult>(
+        method: RequestMethod, url: string[] = [], params: any = null, data: any = null, noAuth: boolean = false
+    ) {
         return this.sendRequest<RequestResult>(method, url.join('/'), params, data, noAuth);
     }
 
 
-    sendRequest<RequestResult>(method: RequestMethod, url: string, params: any = null, data: any = null, noAuth: boolean = false): Observable<RequestResult> {
+    sendRequest<RequestResult>(
+        method: RequestMethod, url: string, params: any = null, data: any = null, noAuth: boolean = false
+    ): Observable<RequestResult> {
 
         let request: Observable<RequestResult> = null;
         if (this.sessionService.token || noAuth) {

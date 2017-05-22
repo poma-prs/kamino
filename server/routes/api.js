@@ -1,7 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const pgp = require("pg-promise")(/*options*/);
-const db = pgp("postgres://postgres:1234321@localhost:5432/postgres");
+let db;
+if (process && process.env && process.env.DATABASE_URL) {
+    db = pgp(process.env.DATABASE_URL);
+} else {
+    db = pgp("postgres://postgres:1234321@localhost:5432/postgres");
+}
+
 const crypto = require('crypto');
 const md5 = function (s) {
     function L(k, d) {
@@ -212,7 +218,6 @@ const md5 = function (s) {
 router.get('/', (req, res) => {
     res.send('api works');
 });
-
 router.post('/login', (req, res) => {
 
     let body = req.body;
@@ -221,7 +226,7 @@ router.post('/login', (req, res) => {
     db.one("SELECT * FROM users WHERE login = $1", login)
         .then((user) => {
             if (user) {
-                if (user.password && user.password === password) {
+                if (user.password && user.password === md5(password)) {
                     let sesh = md5('1234321' + new Date().toLocaleString());
 
                     db.none("DELETE FROM sessions WHERE user_id = $1", user.id).then(() => {
@@ -254,6 +259,8 @@ const seshCheck = (sesh) => {
 router.post('/order', (req, res) => {
     let body = req.body;
     let result = false;
+    let errorRes = null;
+    let wasError = false;
     if (body.order) {
         let order = body.order;
         let orderId = null;
@@ -261,22 +268,154 @@ router.post('/order', (req, res) => {
             // console.log(id);
             orderId = id.currval;
             for (let orderPos of order) {
-                db.none("INSERT INTO order_positions(order_id, product_id, count) VALUES($1, $2, $3)", [orderId, orderPos.foodId, orderPos.foodCount]).then(() => {
-
-                }).catch((error) => res.send({successful: 0, error: error}));
+                db.none("INSERT INTO order_positions(order_id, product_id, count, cooked) VALUES($1, $2, $3, 0)", [orderId, orderPos.foodId, orderPos.foodCount]).then(() => {
+                    result = true;
+                }).catch((error) => {
+                    wasError = true;
+                    errorRes = error;
+                });
             }
+            if (!wasError)
+                result = true;
         }).catch((error) => {
                 console.log(error);
                 res.send({successful: 0, error: error})
             }
         );
-
-
+        if (!result && wasError && error)
+            res.send({successful: 0, error: errorRes});
+        else
+            res.send({successful: 1});
+    } else {
+        res.send({successful: 0, error: 'empty body'});
     }
-    if (result)
-        res.send({successful: 1});
-    else
-        res.send({successful: 0});
+
+});
+
+router.get('/order', (req, res) => {
+
+    let result = [];
+
+    let orderList = [];
+    db.many(
+        // "SELECT * FROM orders, order_positions where orders.completed = FALSE AND order.id = order_positions.order_id"
+        "SELECT * FROM order_positions INNER JOIN orders ON (orders.id = order_positions.order_id AND orders.completed = FALSE);"
+        // "SELECT * FROM orders WHERE completed = FALSE"
+    )
+        .then((ordersList) => {
+            for (let orders of ordersList) {
+                console.log(orders);
+                let isNoFirst = false;
+                for (let x of orderList) {
+                    if (x.id === orders.order_id) {
+                        isNoFirst = true;
+                        x.positions.push({
+                            productId: orders.product_id,
+                            count: orders.count,
+                            cooked: orders.cooked,
+                        });
+                        break;
+                    }
+                }
+
+                if (!isNoFirst) {
+                    let order = {};
+                    order.sum = orders.sum;
+                    order.id = orders.id;
+                    order.completed = orders.completed;
+                    order.positions = [];
+                    order.positions.push({
+                        productId: orders.product_id,
+                        count: orders.count,
+                        cooked: orders.cooked,
+                    });
+                    orderList.push(order);
+                }
+
+            }
+            res.send(orderList)
+            // for (let order of orders) {
+            //     db.many("SELECT * FROM order_positions WHERE order_id=$1", order.id)
+            //         .then((positions) => {
+            //             order.positions = positions;
+            //         }).catch((error) => {
+            //         console.log(error);
+            //         res.send({successful: 0, error: error})
+            //     });
+            // }
+            // result = orders;
+        }).catch((error) => {
+        console.log(error);
+        res.send({successful: 0, error: error})
+    })
+
+
+});
+
+router.post('/order/fulfil', (req, res) => {
+
+    let orderId = req.body.orderId, result = false;
+    db.none("UPDATE orders SET completed = TRUE WHERE id=$1", orderId).then(() => {
+        res.send({successful: 1})
+    }).catch((error) => {
+        res.send({successful: 0, error: error})
+    })
+
+    // let result = [];
+    //
+    // let orderList = [];
+    // db.none(
+    //     // "SELECT * FROM orders, order_positions where orders.completed = FALSE AND order.id = order_positions.order_id"
+    //     "SELECT * FROM order_positions INNER JOIN orders ON (orders.id = order_positions.order_id);"
+    //     // "SELECT * FROM orders WHERE completed = FALSE"
+    // )
+    //     .then((ordersList) => {
+    //         for (let orders of ordersList) {
+    //             console.log(orders);
+    //             let isNoFirst = false;
+    //             for (let x of orderList) {
+    //                 if (x.id === orders.order_id) {
+    //                     isNoFirst = true;
+    //                     x.positions.push({
+    //                         productId: orders.product_id,
+    //                         count: orders.count,
+    //                         cooked: orders.cooked,
+    //                     });
+    //                     break;
+    //                 }
+    //             }
+    //
+    //             if (!isNoFirst) {
+    //                 let order = {};
+    //                 order.sum = orders.sum;
+    //                 order.id = orders.id;
+    //                 order.completed = orders.completed;
+    //                 order.positions = [];
+    //                 order.positions.push({
+    //                     productId: orders.product_id,
+    //                     count: orders.count,
+    //                     cooked: orders.cooked,
+    //                 });
+    //                 orderList.push(order);
+    //             }
+    //
+    //         }
+    //         res.send(orderList)
+    //         // for (let order of orders) {
+    //         //     db.many("SELECT * FROM order_positions WHERE order_id=$1", order.id)
+    //         //         .then((positions) => {
+    //         //             order.positions = positions;
+    //         //         }).catch((error) => {
+    //         //         console.log(error);
+    //         //         res.send({successful: 0, error: error})
+    //         //     });
+    //         // }
+    //         // result = orders;
+    //     }).catch((error) => {
+    //     console.log(error);
+    //     res.send({successful: 0, error: error})
+    // })
+
 
 });
 module.exports = router;

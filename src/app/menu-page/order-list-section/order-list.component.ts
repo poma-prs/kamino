@@ -17,7 +17,7 @@ export class OrderListComponent {
     addToOrder(position: OrderPosition) {
         for (let p of this.namefoodArray) {
           if (p.food.id === position.food.id) {
-            p.count += (position.count || 0);
+            p.count = Number(p.count) + Number(position.count || 0);
             return;
           }
         }

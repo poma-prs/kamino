@@ -1,8 +1,9 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../api/auth.service";
 import {LoginResponse, UserData} from "../api/models/UserData";
 import {ApiService} from "../api/api.service";
 import {SessionService} from "../api/session.service";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
     selector: 'login-page',
@@ -10,7 +11,7 @@ import {SessionService} from "../api/session.service";
     styleUrls: ['./login.component.css'],
 
 })
-export class LoginPageComponent {
+export class LoginPageComponent implements OnInit {
     user: UserData = {
         login: '',
         password: ''
@@ -18,13 +19,18 @@ export class LoginPageComponent {
     loading = false;
     result: boolean = false;
     touched: boolean = false;
+    returnUrl: string = '/';
 
-    constructor(
-        protected authService: AuthService,
-        protected apiService: ApiService,
-        protected sessionService: SessionService
-    ) {
+    constructor(private route: ActivatedRoute,
+                protected authService: AuthService,
+                protected apiService: ApiService,
+                protected sessionService: SessionService,
+                protected router: Router) {
 
+    }
+
+    ngOnInit() {
+        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     }
 
     login() {
@@ -35,6 +41,7 @@ export class LoginPageComponent {
                 (data: LoginResponse) => {
                     if (!data.error && data.token) {
                         this.sessionService.token = data.token;
+                        this.router.navigate([this.returnUrl]);
                     }
                     if (data.error) {
                         console.error(data.error);
