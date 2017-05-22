@@ -18,7 +18,8 @@ const appRoutes: Routes = [
     {path: 'kitchen', component: KitchenPageComponent, canActivate: [AuthGuard]},
     {path: 'receipt', component: ReceiptPageComponent, canActivate: [AuthGuard]},
     {path: 'payment', component: PaymentComponent},
-    {path: 'login', component: LoginPageComponent}
+    {path: 'login', component: LoginPageComponent},
+    {path: 'logout', component: LoginPageComponent}
 ];
 
 export const Routing = RouterModule.forRoot(appRoutes);

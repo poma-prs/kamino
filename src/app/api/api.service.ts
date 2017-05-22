@@ -43,23 +43,23 @@ export class ApiService {
         return this.request<Order[]>(RequestMethod.Get, ['order']);
     }
 
+    public getCompletedOrders() {
+        return this.request<Order[]>(RequestMethod.Get, ['order', 'completed']);
+    }
+
     public fulfil(orderId: number) {
-        return this.request<{ successful: boolean , error?: any}>(
+        return this.request<{ successful: boolean, error?: any }>(
             RequestMethod.Post, ['order', 'fulfil'], null, {orderId: orderId}, true
         );
     }
 
 
-    protected request<RequestResult>(
-        method: RequestMethod, url: string[] = [], params: any = null, data: any = null, noAuth: boolean = false
-    ) {
+    protected request<RequestResult>(method: RequestMethod, url: string[] = [], params: any = null, data: any = null, noAuth: boolean = false) {
         return this.sendRequest<RequestResult>(method, url.join('/'), params, data, noAuth);
     }
 
 
-    sendRequest<RequestResult>(
-        method: RequestMethod, url: string, params: any = null, data: any = null, noAuth: boolean = false
-    ): Observable<RequestResult> {
+    sendRequest<RequestResult>(method: RequestMethod, url: string, params: any = null, data: any = null, noAuth: boolean = false): Observable<RequestResult> {
 
         let request: Observable<RequestResult> = null;
         if (this.sessionService.token || noAuth) {

@@ -2,32 +2,108 @@
     <header>
         <h1>Payment Page</h1>
     </header>
-    <body>
-        <section class="container">
-            <div class="order">
-                <h3>Order:</h3>
-                <div class="items">Insert Items here.</div>
+    <section class="container">
+        <div class="order">
+            <h3>Order:</h3>
+
+            <div class="thumbnail" *ngIf="order.length">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th class="text-center">Price</th>
+                        <th class="text-center">Total</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let info of order">
+                        <td class="col-sm-8 col-md-6">
+                            <div class="media">
+                                <a class="thumbnail pull-left" href="#">
+                                    <img class="media-object"
+                                         src="{{ info.food.picture }}"
+                                         style="width: 72px; height: 72px;">
+                                </a>
+                                <div class="media-body">
+                                    <h4 class="media-heading">
+                                        {{ info.food.name }}
+                                    </h4>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td class="col-sm-1 col-md-1 text-center">
+                            <strong>{{ info.count }}</strong>
+                        </td>
+
+                        <td class="col-sm-1 col-md-1 text-center">
+                            <strong>${{ info.food.price }}</strong>
+                        </td>
+
+                        <td class="col-sm-1 col-md-1 text-center">
+                            <strong>${{ info.food.price * info.count }}</strong>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>  </td>
+                        <td>  </td>
+                        <td class="text-center"><h3>Total</h3></td>
+                        <td class="text-center">
+                            <h3><strong>${{sum}}</strong></h3>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
 
-            <div class="form">
-                <form>
-                    <input type="text" placeholder="First name">
-                    <input type="text" placeholder="Last name">
-                    <input type="text" placeholder="Address">
-                    <input type="email" placeholder="E-mail">
-                    <input type="tel" placeholder="Phone Number">
-                    <input type="number" name="CreditCard" placeholder="Credit Card Number" size="12">
-                    <input type="number" name="exp" placeholder="Expiry Date" maxlength="4">
-                    <input type="number" name="CVC" placeholder="CVC" maxlength="3" size="3">
+        </div>
 
-                    <div class="radio-toolbar">
-                        <input type="radio" name="option" id="pickup"><label for="pickup">Pickup</label><br>
-                        <input type="radio" name="option" id="delivery"><label for="delivery">Delivery</label>
-                    </div>
-
-                    <input type="submit">
-                </form>
+        <div class="form">
+            <h3>Payment form:</h3>
+            <div class="alert alert-success" *ngIf="submitted">
+                <strong>Thank you!</strong> You will receive your order soon
             </div>
-        </section>
-    </body>
+            <div class="alert alert-danger" *ngIf="error">
+                <strong>Sorry!</strong> Form submit error
+            </div>
+            <form (ngSubmit)="onSubmit()" [formGroup]="form">
+                <input type="text" formControlName="firstName" class="form-control"
+                       [ngClass]="!form.controls.firstName.valid && form.controls.firstName.touched ? 'input-invalid' : ''"
+                       placeholder="First name">
+                <input type="text" formControlName="lastName" class="form-control"
+                       [ngClass]="!form.controls.lastName.valid && form.controls.lastName.touched ? 'input-invalid' : ''"
+                       placeholder="Last name">
+                <input type="text" formControlName="address" class="form-control"
+                       [ngClass]="!form.controls.address.valid && form.controls.address.touched ? 'input-invalid' : ''"
+                       placeholder="Address">
+                <input type="email" formControlName="mail" class="form-control"
+                       [ngClass]="!form.controls.mail.valid && form.controls.mail.touched ? 'input-invalid' : ''"
+                       placeholder="E-mail">
+                <input type="tel" formControlName="phone" class="form-control"
+                       [ngClass]="!form.controls.phone.valid && form.controls.phone.touched ? 'input-invalid' : ''"
+                       placeholder="Phone Number">
+                <input type="number" formControlName="creditCard" class="form-control"
+                       [ngClass]="!form.controls.creditCard.valid && form.controls.creditCard.touched ? 'input-invalid' : ''"
+                       name="CreditCard" placeholder="Credit Card Number" size="12">
+                <input type="number" formControlName="exp" class="form-control"
+                       [ngClass]="!form.controls.exp.valid && form.controls.exp.touched ? 'input-invalid' : ''"
+                       name="exp" placeholder="Expiry Date" maxlength="4">
+                <input type="number" formControlName="CVC" class="form-control"
+                       [ngClass]="!form.controls.CVC.valid && form.controls.CVC.touched ? 'input-invalid' : ''"
+                       name="CVC" placeholder="CVC" maxlength="3" size="3">
+
+                <div class="radio-toolbar">
+                    <input type="radio" name="option" id="pickup" checked required><label for="pickup">Pickup</label><br>
+                    <input type="radio" name="option" id="delivery"><label for="delivery">Delivery</label>
+                </div>
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-success" (click)="processTheOrder($event)" [disabled]="!form.valid">
+                        Pay
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
 </section>

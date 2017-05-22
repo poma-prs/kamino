@@ -2,6 +2,8 @@ import {Component, Input, ViewChild} from '@angular/core';
 import {OrderListComponent} from "./order-list-section/order-list.component";
 import {ApiService} from "../api/api.service";
 import {OrderPosition} from "./food-list-section/food-list.component";
+import {SessionService} from "../api/session.service";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'ray-app',
@@ -23,30 +25,38 @@ export class MenuPageComponent {
         console.log(event);
     }
 
-    constructor(protected apiService: ApiService) {
+    constructor(protected apiService: ApiService,
+                protected sessionService: SessionService,
+                protected router: Router) {
 
     }
 
     processTheOrder(orderList: OrderPosition[]) {
-        console.log(orderList);
-        if (!this.loading) {
-            this.loading = true;
-            this.apiService.order(orderList).finally(() => {
-                this.loading = false
-            }).subscribe(
-                (response) => {
-                    if (response) {
-                        if (this.orderList) {
-                            this.orderList.clear();
-                        }
-                    }
-                },
-                (error) => {
-                    console.log(error);
-                }
-            )
-        }
+        debugger;
+        this.sessionService.setCurrentOrder(orderList);
+        this.router.navigateByUrl('/payment');
     }
+
+    // processTheOrder(orderList: OrderPosition[]) {
+    //     console.log(orderList);
+    //     if (!this.loading) {
+    //         this.loading = true;
+    //         this.apiService.order(orderList).finally(() => {
+    //             this.loading = false;
+    //         }).subscribe(
+    //             (response) => {
+    //                 if (response) {
+    //                     if (this.orderList) {
+    //                         this.orderList.clear();
+    //                     }
+    //                 }
+    //             },
+    //             (error) => {
+    //                 console.log(error);
+    //             }
+    //         );
+    //     }
+    // }
 
 }
 

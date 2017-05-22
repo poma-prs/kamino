@@ -30,6 +30,9 @@ export class LoginPageComponent implements OnInit {
     }
 
     ngOnInit() {
+        if (this.sessionService.token) {
+            this.sessionService.clearToken();
+        }
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     }
 

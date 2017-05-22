@@ -1,8 +1,7 @@
-body { 
-    font: 14px/1.4 Georgia, serif; 
-}
-#page-wrap { 
-    width: 800px; margin: 0 auto; 
+
+#page-wrap {
+    width: 800px; margin: 0 auto;
+    font: 14px/1.4 Georgia, serif;
 }
 
 textarea { 
@@ -41,7 +40,8 @@ table td, table th {
     float: left; 
 }
 #customer { 
-    overflow: hidden; 
+    overflow: hidden;
+    margin-top: 30px;
 }
 
 #logo { 

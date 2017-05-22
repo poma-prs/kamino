@@ -341,24 +341,64 @@ router.get('/order', (req, res) => {
 
             }
             res.send(orderList)
-            // for (let order of orders) {
-            //     db.many("SELECT * FROM order_positions WHERE order_id=$1", order.id)
-            //         .then((positions) => {
-            //             order.positions = positions;
-            //         }).catch((error) => {
-            //         console.log(error);
-            //         res.send({successful: 0, error: error})
-            //     });
-            // }
-            // result = orders;
+
         }).catch((error) => {
         res.send([]);
-        // console.log(error);
-        // res.send({successful: 0, error: error})
+
     })
 
 
 });
+
+router.get('/order/completed', (req, res) => {
+
+
+    let orderList = [];
+    db.many(
+        // "SELECT * FROM orders, order_positions where orders.completed = FALSE AND order.id = order_positions.order_id"
+        "SELECT * FROM order_positions INNER JOIN orders ON (orders.id = order_positions.order_id AND orders.completed = TRUE);"
+        // "SELECT * FROM orders WHERE completed = FALSE"
+    )
+        .then((ordersList) => {
+            for (let orders of ordersList) {
+                console.log(orders);
+                let isNoFirst = false;
+                for (let x of orderList) {
+                    if (x.id === orders.order_id) {
+                        isNoFirst = true;
+                        x.positions.push({
+                            productId: orders.product_id,
+                            count: orders.count,
+                            cooked: orders.cooked,
+                        });
+                        break;
+                    }
+                }
+
+                if (!isNoFirst) {
+                    let order = {};
+                    order.sum = orders.sum;
+                    order.id = orders.id;
+                    order.completed = orders.completed;
+                    order.positions = [];
+                    order.positions.push({
+                        productId: orders.product_id,
+                        count: orders.count,
+                        cooked: orders.cooked,
+                    });
+                    orderList.push(order);
+                }
+
+            }
+            res.send(orderList)
+        }).catch((error) => {
+        res.send([]);
+
+    })
+
+
+});
+
 
 router.post('/order/fulfil', (req, res) => {
 

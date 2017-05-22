@@ -3,73 +3,87 @@
         <h1>Receipt Page</h1>
     </header>
 
-	<body>
-		<div id="page-wrap">
-			<div id="identity">
-				<textarea readonly id="address">Harnoor Gill <br> 555 Seymour St <br> Vancouver, BC V6B 3H6 <br><br> Phone: (604) 434-5734</textarea>
-				<div id="logo">
-					<div id="logohelp">
-						<input id="imageloc" type="text" size="50" value="" /><br />
-						(max width: 540px, max height: 100px)
-					</div>
-				</div>
-			</div>
-			<div style="clear:both"></div>
-			<div id="customer">
-				<textarea readonly id="customer-title">Planet Kamino Food For Starving</textarea>
-				<table id="meta">
-					<tr>
-						<td class="meta-head">Invoice #</td>
-						<td><textarea readonly>000123</textarea></td>
-					</tr>
-					<tr>
-						<td class="meta-head">Date</td>
-						<td><textarea readonly id="date">May 11, 2017</textarea></td>
-					</tr>
-					<tr>
-						<td class="meta-head">Amount Due</td>
-						<td><div class="due">$875.00</div></td>
-					</tr>
-				</table>
-				<table id="items">
-					<tr>
-						<th>Item</th>
-						<th>Description</th>
-						<th>Unit Cost</th>
-						<th>Quantity</th>
-						<th>Price</th>
-					</tr>
-					<tr class="item-row">
-						<td class="item-name"><div class="delete-wpr"><textarea readonly>Web Updates</textarea></div></td>
-						<td class="description"><textarea readonly>Monthly web updates for http://widgetcorp.com (Nov. 1 - Nov. 30, 2009)</textarea></td>
-						<td><textarea readonly class="cost">$650.00</textarea></td>
-						<td><textarea readonly class="qty">1</textarea></td>
-						<td><span class="price">$650.00</span></td>
-					</tr>
-					<tr class="item-row">
-						<td class="item-name"><div class="delete-wpr"><textarea readonly>SSL Renewals</textarea></div></td>
-						<td class="description"><textarea readonly>Yearly renewals of SSL certificates on main domain and several subdomains</textarea></td>
-						<td><textarea readonly class="cost">$75.00</textarea></td>
-						<td><textarea readonly class="qty">3</textarea></td>
-						<td><span class="price">$225.00</span></td>
-					</tr>
-					<tr>
-						<td colspan="2" class="blank"> </td>
-		      <td colspan="2" class="total-line">Subtotal</td>
-		      <td class="total-value"><div id="subtotal">$875.00</div></td>
-					</tr>
-					<tr>
-						<td colspan="2" class="blank"> </td>
-						<td colspan="2" class="total-line">Tax</td>
-						<td class="total-value"><div id="subtotal">$875.00</div></td>
-					</tr>
-					<tr>
-						<td colspan="2" class="blank"> </td>
-						<td colspan="2" class="total-line">Total</td>
-						<td class="total-value"><div id="total">$875.00</div></td>
-					</tr>
-				</table>
-			</div>
-		</div>
-	</body>
+    <div id="page-wrap">
+        <div id="identity">
+            <p readonly id="address">Harnoor Gill <br> 555 Seymour St <br> Vancouver, BC V6B 3H6 <br><br> Phone: (604)
+                434-5734</p>
+            <div id="logo">
+                <div id="logohelp">
+                    <input id="imageloc" type="text" size="50" value=""/><br/>
+                    (max width: 540px, max height: 100px)
+                </div>
+            </div>
+        </div>
+        <div style="clear:both"></div>
+        <div id="customer" *ngFor="let order of orders">
+            <textarea readonly id="customer-title">Planet Kamino Food For Starving</textarea>
+            <table id="meta">
+                <tr>
+                    <td class="meta-head">Order #</td>
+                    <td><textarea readonly>{{order.id}}</textarea></td>
+                </tr>
+                <!--<tr>-->
+                <!--<td class="meta-head">Date</td>-->
+                <!--<td><textarea readonly id="date">May 11, 2017</textarea></td>-->
+                <!--</tr>-->
+                <tr>
+                    <td class="meta-head">Amount Due</td>
+                    <td>
+                        <div class="due">{{order.sum}}</div>
+                    </td>
+                </tr>
+            </table>
+            <table id="items">
+                <tr>
+                    <th>Item</th>
+                    <th>Description</th>
+                    <th>Unit Cost</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                </tr>
+                <tr class="item-row" *ngFor="let pos of order.positions">
+                    <td class="item-name">
+                        <div class="delete-wpr"><textarea readonly>{{pos.product.name}}</textarea></div>
+                    </td>
+                    <td class="description"><textarea readonly>{{pos.product.description || '-'}}</textarea>
+                    </td>
+                    <td><textarea readonly class="cost">{{pos.product.price}}</textarea></td>
+                    <td><textarea readonly class="qty">{{pos.count}}</textarea></td>
+                    <td><span class="price">{{pos.product.price * pos.count}}</span></td>
+                </tr>
+                <!--<tr class="item-row">-->
+                <!--<td class="item-name">-->
+                <!--<div class="delete-wpr"><textarea readonly>SSL Renewals</textarea></div>-->
+                <!--</td>-->
+                <!--<td class="description"><textarea readonly>Yearly renewals of SSL certificates on main domain and several subdomains</textarea>-->
+                <!--</td>-->
+                <!--<td><textarea readonly class="cost">$75.00</textarea></td>-->
+                <!--<td><textarea readonly class="qty">3</textarea></td>-->
+                <!--<td><span class="price">$225.00</span></td>-->
+                <!--</tr>-->
+                <!--<tr>-->
+                <!--<td colspan="2" class="blank"></td>-->
+                <!--<td colspan="2" class="total-line">Subtotal</td>-->
+                <!--<td class="total-value">-->
+                <!--<div id="subtotal">$875.00</div>-->
+                <!--</td>-->
+                <!--</tr>-->
+                <!--<tr>-->
+                <!--<td colspan="2" class="blank"></td>-->
+                <!--<td colspan="2" class="total-line">Tax</td>-->
+                <!--<td class="total-value">-->
+                <!--<div id="subtotal">$875.00</div>-->
+                <!--</td>-->
+                <!--</tr>-->
+                <tr>
+                    <td colspan="2" class="blank"></td>
+                    <td colspan="2" class="total-line">Total</td>
+                    <td class="total-value">
+                        <div id="total">{{order.sum}}</div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
 </section>

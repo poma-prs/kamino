@@ -27,7 +27,7 @@ export class OrderListComponent {
     get sum() {
         let sum = 0;
         for (let position of this.namefoodArray) {
-            sum += (position.food.price || 0);
+            sum += (position.food.price || 0) * (position.count || 0);
         }
         return sum;
     }
