@@ -45,7 +45,7 @@ System.register(['@angular/core'], function(exports_1, context_1) {
                     this.namefoodArray = [];
                 };
                 __decorate([
-                    core_1.Output(), 
+                    core_1.Output(),
                     __metadata('design:type', Object)
                 ], OrderListComponent.prototype, "process", void 0);
                 OrderListComponent = __decorate([
@@ -53,7 +53,7 @@ System.register(['@angular/core'], function(exports_1, context_1) {
                         selector: 'fd-od-list',
                         templateUrl: './order-list.component.html',
                         styleUrls: ['./order-list.component.css', './order-list-button.component.css']
-                    }), 
+                    }),
                     __metadata('design:paramtypes', [])
                 ], OrderListComponent);
                 return OrderListComponent;

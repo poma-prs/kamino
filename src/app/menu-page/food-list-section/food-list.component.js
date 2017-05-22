@@ -23,6 +23,7 @@ System.register(['@angular/core'], function(exports_1, context_1) {
                     this.search = new core_1.EventEmitter();
                     this.totalOrder = 1;
                     this.opened = false;
+                    this.descShowed = false;
                 }
                 FoodListComponent.prototype.select = function (item) {
                     this.selectedItem = item;
@@ -37,11 +38,11 @@ System.register(['@angular/core'], function(exports_1, context_1) {
                     this.selectedItem = null;
                 };
                 __decorate([
-                    core_1.Input(), 
+                    core_1.Input(),
                     __metadata('design:type', Array)
                 ], FoodListComponent.prototype, "itemList", void 0);
                 __decorate([
-                    core_1.Output(), 
+                    core_1.Output(),
                     __metadata('design:type', Object)
                 ], FoodListComponent.prototype, "search", void 0);
                 FoodListComponent = __decorate([
@@ -49,7 +50,7 @@ System.register(['@angular/core'], function(exports_1, context_1) {
                         selector: 'mw-food-item',
                         templateUrl: './food-list.component.html',
                         styleUrls: ['./food-list.component.css']
-                    }), 
+                    }),
                     __metadata('design:paramtypes', [])
                 ], FoodListComponent);
                 return FoodListComponent;

@@ -1,22 +1,33 @@
-<div class = "navbar" data-activeslide="1">
-  <div id = "logo">
-    <img src = "assets/media/Starwars.png" alt = "" />
-    <h3>Kamino Kanteen</h3>
-  </div>
-  <div id = "navBar">
-    <nav>
-      <a id='home-link' routerLink='' routerLinkActive='active'>Home</a>
-      <a id='promotion-link' routerLink='/promotion' routerLinkActive='active'>Promotion</a>
-      <a id='menu-link' routerLink='/menu' routerLinkActive='active'>Menu</a>
-      <a id='about-link' routerLink='/about' routerLinkActive='active'>About Us</a>
-      <a id='kitchen-link' routerLink='/kitchen' routerLinkActive='active'>Kitchen</a>
-      <a id='receipt-link' routerLink='/receipt' routerLinkActive='active'>Receipt</a>
-      <a id='payment-link' routerLink='/payment' routerLinkActive='active'>Payment</a>
-      <a id='login-link' routerLink='/login' routerLinkActive='active'>Login</a>
-    </nav>
-  </div>
-</div>
+<nav class="navbar navbar-default">
+  <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Kamino</a>
+    </div>
+
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li><a routerLink='' routerLinkActive='active'>Home</a></li>
+        <li><a routerLink='/promotion' routerLinkActive='active'>Promotion</a></li>
+        <li><a routerLink='/menu' routerLinkActive='active'>Menu</a></li>
+        <li><a routerLink='/about' routerLinkActive='active'>About Us</a></li>
+        <li><a routerLink='/kitchen' routerLinkActive='active'>Kitchen</a></li>
+        <li><a routerLink='/receipt' routerLinkActive='active'>Receipt</a></li>
+        <li><a routerLink='/payment' routerLinkActive='active'>Payment</a></li>
+        <li><a routerLink='/login' routerLinkActive='active'>Login</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
 
 <div>
   <router-outlet></router-outlet>
 </div>
+
+<sd-bar></sd-bar>

@@ -1,23 +1,35 @@
-<ul class="caption-style">
-    <li>
-        <img src="{{itemList.picture}}" alt=""/>
-        <div class="caption">
-            <div class="blur"></div>
-            <div class="caption-text">
-                <h1>Description</h1>
-                <p>{{itemList.description}}</p>
-            </div>
+<div class="thumbnail"
+     (mouseover)="setDescShowed=true"
+    (mouseout)="setDescShowed=false">
+  <div class="item-image"
+       [ngStyle]="{'background-image': 'url(' + itemList.picture + ')'}">
+    <div class="desc-block" [hidden]="!setDescShowed">
+      <h3>Description</h3>
+      <p>{{itemList.description}}</p>
+    </div>
+  </div>
+  <div class="caption">
+    <h3 class="title">{{itemList.name}}</h3>
+    <div class="price">
+      <h3><label>${{itemList.price}}</label></h3>
+    </div>
+
+    <div class="btn btn-success btn-product"
+       (click)="select(itemList)" *ngIf="!selectedItem && !opened">
+      Order Now
+    </div>
+
+    <div class="row" *ngIf="selectedItem && opened">
+      <div class="col-md-6">
+        <input #number class="form-control" type="number" value="1" min="1" max="10">
+      </div>
+      <div class="col-md-6">
+        <div
+           class="btn btn-success btn-product"
+           (click)="addInList(number.value)">
+          <span class="glyphicon glyphicon-shopping-cart"></span> Buy
         </div>
-    </li>
-</ul>
-<h2>{{itemList.name}}</h2>
-<div class="price">Price: ${{itemList.price}}</div>
-<button class="btn btn-1 btn-1e order-btn" (click)="select(itemList)" *ngIf="!selectedItem && !opened">Order Now
-</button>
-
-<div class="count-selector" *ngIf="selectedItem && opened">
-    <label>Count: </label><input #number type="number" value="1" min="1" max="10">
-    <button (click)="addInList(number.value)">Add</button>
+      </div>
+    </div>
+  </div>
 </div>
-
-<!--style="vertical-align:middle"-->

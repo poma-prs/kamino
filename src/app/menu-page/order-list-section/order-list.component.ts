@@ -15,6 +15,12 @@ export class OrderListComponent {
     @Output() process = new EventEmitter();
 
     addToOrder(position: OrderPosition) {
+        for (let p of this.namefoodArray) {
+          if (p.food.id === position.food.id) {
+            p.count += (position.count || 0);
+            return;
+          }
+        }
         this.namefoodArray.push(position);
     }
 
