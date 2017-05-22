@@ -9,3 +9,12 @@ h3{
     font-size: 100px;
     color: white;
 }
+
+table .btn {
+  margin-bottom: 5px;
+}
+
+.logger-block pre {
+  max-height: 400px;
+  overflow-y: scroll;
+}
