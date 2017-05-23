@@ -9,3 +9,28 @@ h3{
     font-size: 100px;
     color: white;
 }
+
+table .btn {
+  margin-bottom: 5px;
+}
+
+table .thumbnail.pull-left {
+  padding: 3px;
+  margin-right: 10px;
+  height: 75px;
+  width: 75px;
+}
+
+table .thumbnail.pull-left img {
+  height: 100%;
+  width: 100%;
+}
+
+table .media .media-body h4 {
+  margin-top: 30px
+}
+
+.logger-block pre {
+  max-height: 400px;
+  overflow-y: scroll;
+}
