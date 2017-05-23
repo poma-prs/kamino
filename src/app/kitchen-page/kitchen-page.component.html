@@ -4,108 +4,126 @@
 <h2 class="text-center" *ngIf="cooking">Cooking...</h2>
 
 <div class="inventory" *ngIf="inventory.length > 0">
-  <div class="container">
-    <h1>Inventory:</h1>
-    <div class="thumbnail">
-      <table class="table table-hover">
-        <thead>
-            <tr>
-                <th>Product</th>
-                <th class="text-center">Quantity</th>
-            </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let info of inventory">
-            <td class="col-sm-8 col-md-6">
-              <div class="media">
-                <div class="thumbnail pull-left">
-                  <img class="media-object" src="{{ info.food.picture }}">
-                </div>
-                <div class="media-body">
-                    <h4 class="media-heading">
-                      {{ info.food.name }}
-                    </h4>
-                </div>
-              </div>
-            </td>
+    <div class="container">
+        <h1>Inventory:</h1>
+        <div class="thumbnail">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Product</th>
+                    <th class="text-center">Quantity</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let info of inventory">
+                    <td class="col-sm-8 col-md-6">
+                        <div class="media">
+                            <div class="thumbnail pull-left">
+                                <img class="media-object" src="{{ info.food.picture }}">
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading">
+                                    {{ info.food.name }}
+                                </h4>
+                            </div>
+                        </div>
+                    </td>
 
-            <td class="col-sm-1 col-md-1 text-center">
-              <strong>{{ info.count }}</strong>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+                    <td class="col-sm-1 col-md-1 text-center">
+                        <strong>{{ info.count }}</strong>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-  </div>
 </div>
 
 <div class="logger-block">
-  <div class="container">
-    <h1>Log history:</h1>
-    <pre>
+    <div class="container">
+        <h1>Log history:</h1>
+        <pre>
       <span *ngFor="let history of logHistory">
         {{history}}
       </span>
     </pre>
-  </div>
-</div>
-
-<div class="orders-block" *ngIf="orders.length > 0">
-  <div class="container">
-    <h1>Orders</h1>
-
-    <div class="order" *ngFor="let order of orders;let oindex=index">
-      <h1>
-        Order #{{order.id}}
-        <a class="btn btn-success"
-           *ngIf=isCompleted(oindex)
-           (click)="fulfil(oindex)">
-          Fulfill
-        </a>
-      </h1>
-
-      <div class="thumbnail" *ngIf="order.positions.length">
-        <table class="table table-hover">
-          <thead>
-              <tr>
-                  <th>Product</th>
-                  <th class="text-center">Quantity</th>
-                  <th class="text-center">Cooked</th>
-                  <th class="text-center">Cook</th>
-              </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let info of order.positions;let pindex = index">
-              <td class="col-sm-8 col-md-6">
-                <div class="media">
-                  <div class="thumbnail pull-left">
-                    <img class="media-object" src="{{ info.product.picture }}">
-                  </div>
-                  <div class="media-body">
-                      <h4 class="media-heading">
-                        {{ info.product.name }}
-                      </h4>
-                  </div>
-                </div>
-              </td>
-
-              <td class="col-sm-1 col-md-1 text-center">
-                <strong>{{ info.count }}</strong>
-              </td>
-
-              <td class="col-sm-1 col-md-1 text-center">
-                <strong>{{ info.cooked }}</strong>
-              </td>
-
-              <td class="col-sm-1 col-md-1 text-center">
-                <button class="btn btn-default" [disabled]="cooking" (click)="make(1, oindex, pindex )">make 1</button>
-                <button class="btn btn-default" [disabled]="cooking" (click)="make(2, oindex, pindex )">make 2</button>
-                <button class="btn btn-default" [disabled]="cooking" (click)="make(6, oindex, pindex )">make 6</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
     </div>
-  </div>
+</div>
+<div class="refresh">
+    <button class="btn btn-success" [disabled]="loading" (click)="requestOrders()">
+        Refresh
+    </button>
+</div>
+<div class="orders-block" *ngIf="orders.length > 0">
+    <div class="container">
+        <h1>Orders</h1>
+
+        <div class="order" *ngFor="let order of orders;let oindex=index">
+            <h1>
+                Order #{{order.id}}
+                <a class="btn btn-success"
+                   *ngIf=isCompleted(oindex)
+                   (click)="fulfil(oindex)">
+                    Fulfill
+                </a>
+            </h1>
+
+            <div class="thumbnail" *ngIf="order.positions.length">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th class="text-center">Quantity</th>
+                        <th class="text-center">Cooked</th>
+                        <th class="text-center">Cook</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let info of order.positions;let pindex = index">
+                        <td class="col-sm-8 col-md-6">
+                            <div class="media">
+                                <div class="thumbnail pull-left">
+                                    <img class="media-object" src="{{ info.product.picture }}">
+                                </div>
+                                <div class="media-body">
+                                    <h4 class="media-heading">
+                                        {{ info.product.name }}
+                                    </h4>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td class="col-sm-1 col-md-1 text-center">
+                            <strong>{{ info.count }}</strong>
+                        </td>
+
+                        <td class="col-sm-1 col-md-1 text-center">
+                            <strong>{{ info.cooked }}</strong>
+                        </td>
+
+                        <td class="col-sm-1 col-md-1 text-center">
+                            <button
+                                    *ngIf="canAddFromInventory(oindex, pindex) != 0"
+                                    class="btn btn-default"
+                                    (click)="addFromInventory(oindex, pindex )"
+
+                            >
+                                add from inventory( {{ canAddFromInventory(oindex, pindex)}})
+                            </button>
+                            <button class="btn btn-default" [disabled]="cooking" (click)="make(1, oindex, pindex )">make
+                                1
+                            </button>
+                            <button class="btn btn-default" [disabled]="cooking" (click)="make(2, oindex, pindex )">make
+                                2
+                            </button>
+                            <button class="btn btn-default" [disabled]="cooking" (click)="make(6, oindex, pindex )">make
+                                6
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>

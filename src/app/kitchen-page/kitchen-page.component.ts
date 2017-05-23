@@ -123,6 +123,43 @@ export class KitchenPageComponent implements OnInit, OnDestroy {
         }
     }
 
+    addFromInventory(orderIndex: number, posIndex: number) {
+        const cookingFood = this.orders[orderIndex].positions[posIndex].product;
+        for (const inv of this.inventory) {
+            if (cookingFood.id === inv.food.id) {
+                const left = this.orders[orderIndex].positions[posIndex].count - this.orders[orderIndex].positions[posIndex].cooked;
+                if (left > inv.count) {
+                    this.orders[orderIndex].positions[posIndex].cooked += inv.count;
+                    inv.count = 0;
+                    this.logHistory.push(
+                        'All(' + inv.count + ') ' + cookingFood.name + ' goes from inventory to order'
+                    );
+                } else {
+                    this.orders[orderIndex].positions[posIndex].cooked = this.orders[orderIndex].positions[posIndex].count;
+                    inv.count -= left;
+                    this.logHistory.push(left + ' ' + cookingFood.name + ' goes from inventory to order');
+                }
+                this.inventory = this.inventory.filter((pos: TrashPosition) => {
+                    return pos.count > 0;
+                });
+                break;
+            }
+        }
+    }
+
+    canAddFromInventory(orderIndex: number, posIndex: number): number {
+        const cookingFood = this.orders[orderIndex].positions[posIndex].product;
+        for (const inv of this.inventory) {
+            if (
+                cookingFood.id === inv.food.id &&
+                this.orders[orderIndex].positions[posIndex].cooked !== this.orders[orderIndex].positions[posIndex].count
+            ) {
+                return inv.count;
+            }
+        }
+        return 0;
+    }
+
     fulfil(orderIndex) {
         if (!this.loading) {
             this.loading = true;
